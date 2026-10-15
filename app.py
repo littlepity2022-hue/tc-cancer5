@@ -167,6 +167,7 @@ tab1, tab2, tab3, tab4 = st.tabs(
     ["盤點撥補醫材", "調撥領用西藥", "一般品項", "盤點撥補ZZ"]
 )
 
+
 # --- 共用匯出 Excel 函式 ---
 def get_excel_download_button(df, filename_prefix):
   output = BytesIO()
@@ -192,7 +193,7 @@ with tab1:
     with cols[i % 2]:
       if st.checkbox(f"{name} ({source})", key=f"p1_item_{i}"):
         selected_records_p1.append({
-            "欄位1": "",
+            "欄位1": "盤點撥補醫材",  # 已改為盤點撥補醫材
             "欄位2": source,
             "欄位3": code,
             "欄位4": name,
