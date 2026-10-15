@@ -198,7 +198,8 @@ with tab1:
   cols = st.columns(2)
   for i, (source, code, name) in enumerate(items_data_page1_stock):
     with cols[i % 2]:
-      if st.checkbox(f"{name} ({source})", key=f"p1_stock_{i}"):
+      # 修改處：只顯示物品名稱 (name)，不顯示 (庫存品)
+      if st.checkbox(name, key=f"p1_stock_{i}"):
         selected_records_p1.append(("盤點撥補醫材", source, code, name))
 
   st.markdown("---")
@@ -217,7 +218,8 @@ with tab2:
   cols = st.columns(2)
   for i, (source, code, name) in enumerate(items_data_page1_single):
     with cols[i % 2]:
-      if st.checkbox(f"{name} ({source})", key=f"p1_single_{i}"):
+      # 修改處：只顯示物品名稱 (name)，不顯示 (單一品項)
+      if st.checkbox(name, key=f"p1_single_{i}"):
         selected_records_p2.append(("盤點撥補醫材", source, code, name))
 
   st.markdown("---")
@@ -255,7 +257,7 @@ with tab4:
   cols = st.columns(2)
   for i, (col1_val, col2_val, code, name) in enumerate(items_data_page3):
     with cols[i % 2]:
-      if st.checkbox(f"{name} ({code})", key=f"p3_item_{i}"):
+      if st.checkbox(name, key=f"p3_item_{i}"):
         selected_records_p4.append((col1_val, col2_val, code, name))
 
   st.markdown("---")
@@ -274,7 +276,7 @@ with tab5:
   cols = st.columns(2)
   for i, (col1_val, col2_val, code, name) in enumerate(items_data_page4):
     with cols[i % 2]:
-      if st.checkbox(f"{name} ({code})", key=f"p4_item_{i}"):
+      if st.checkbox(name, key=f"p4_item_{i}"):
         selected_records_p5.append((col1_val, col2_val, code, name))
 
   st.markdown("---")
