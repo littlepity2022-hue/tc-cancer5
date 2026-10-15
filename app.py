@@ -10,8 +10,7 @@ st.set_page_config(
 
 st.title("📋 醫療物資請領清單登記系統")
 st.write(
-    "請在下方各分頁中勾選您需要請領的物品，系統將自動在下方產生完整 4"
-    " 欄清單。"
+    "請在下方各分頁中勾選您需要請領的物品，系統將自動在下方產生完整清單。"
 )
 
 # ==================== 分頁 1 資料 ====================
@@ -164,7 +163,7 @@ items_data_page4 = [
 
 # 建立 4 個分頁
 tab1, tab2, tab3, tab4 = st.tabs(
-    ["盤點撥補醫材", "調撥領用西藥", "一般品項", "盤點撥補ZZ"]
+    ["盤點撥補醫材", "調撥領用西藥 (出庫請點441 請領點541)", "一般品項", "盤點撥補ZZ"]
 )
 
 
@@ -172,7 +171,7 @@ tab1, tab2, tab3, tab4 = st.tabs(
 def get_excel_download_button(df, filename_prefix):
   output = BytesIO()
   with pd.ExcelWriter(output, engine="openpyxl") as writer:
-    df.to_excel(writer, index=False, sheet_name="請領清單")
+    df.to_excel(writer, index=False, header=False, sheet_name="請領清單")
   excel_data = output.getvalue()
   return st.download_button(
       label="📥 下載此清單 Excel 檔",
@@ -192,43 +191,32 @@ with tab1:
   for i, (source, code, name) in enumerate(items_data_page1):
     with cols[i % 2]:
       if st.checkbox(f"{name} ({source})", key=f"p1_item_{i}"):
-        selected_records_p1.append({
-            "欄位1": "盤點撥補醫材",
-            "欄位2": source,
-            "欄位3": code,
-            "欄位4": name,
-        })
+        selected_records_p1.append(("盤點撥補醫材", source, code, name))
 
   st.markdown("---")
-  st.subheader("📋 盤點撥補醫材產生的 4 欄清單")
+  st.subheader("📋 盤點撥補醫材產生的清單")
   if selected_records_p1:
     df_p1 = pd.DataFrame(selected_records_p1)
-    st.dataframe(df_p1, use_container_width=True)
+    st.dataframe(df_p1, use_container_width=True, hide_index=True)
     get_excel_download_button(df_p1, "盤點撥補醫材")
   else:
     st.info("👆 請在上方勾選項目。")
 
 # --- 分頁 2 介面 ---
 with tab2:
-  st.subheader("💊 調撥領用西藥 - 勾選區")
+  st.subheader("💊 調撥領用西藥 (出庫請點441 請領點541) - 勾選區")
   selected_records_p2 = []
   cols = st.columns(2)
   for i, (col1_val, col2_val, code, name) in enumerate(items_data_page2):
     with cols[i % 2]:
-      # 修改處：勾選框只顯示物品名稱 (name)，不顯示編碼 (code)
       if st.checkbox(name, key=f"p2_item_{i}"):
-        selected_records_p2.append({
-            "欄位1": col1_val,
-            "欄位2": col2_val,
-            "欄位3": code,  # 下方清單依然完整保留編碼
-            "欄位4": name,
-        })
+        selected_records_p2.append((col1_val, col2_val, code, name))
 
   st.markdown("---")
-  st.subheader("📋 調撥領用西藥產生的 4 欄清單")
+  st.subheader("📋 調撥領用西藥產生的清單")
   if selected_records_p2:
     df_p2 = pd.DataFrame(selected_records_p2)
-    st.dataframe(df_p2, use_container_width=True)
+    st.dataframe(df_p2, use_container_width=True, hide_index=True)
     get_excel_download_button(df_p2, "調撥領用西藥")
   else:
     st.info("👆 請在上方勾選項目。")
@@ -241,18 +229,13 @@ with tab3:
   for i, (col1_val, col2_val, code, name) in enumerate(items_data_page3):
     with cols[i % 2]:
       if st.checkbox(f"{name} ({code})", key=f"p3_item_{i}"):
-        selected_records_p3.append({
-            "欄位1": col1_val,
-            "欄位2": col2_val,
-            "欄位3": code,
-            "欄位4": name,
-        })
+        selected_records_p3.append((col1_val, col2_val, code, name))
 
   st.markdown("---")
-  st.subheader("📋 一般品項產生的 4 欄清單")
+  st.subheader("📋 一般品項產生的清單")
   if selected_records_p3:
     df_p3 = pd.DataFrame(selected_records_p3)
-    st.dataframe(df_p3, use_container_width=True)
+    st.dataframe(df_p3, use_container_width=True, hide_index=True)
     get_excel_download_button(df_p3, "一般品項")
   else:
     st.info("👆 請在上方勾選項目。")
@@ -265,18 +248,13 @@ with tab4:
   for i, (col1_val, col2_val, code, name) in enumerate(items_data_page4):
     with cols[i % 2]:
       if st.checkbox(f"{name} ({code})", key=f"p4_item_{i}"):
-        selected_records_p4.append({
-            "欄位1": col1_val,
-            "欄位2": col2_val,
-            "欄位3": code,
-            "欄位4": name,
-        })
+        selected_records_p4.append((col1_val, col2_val, code, name))
 
   st.markdown("---")
-  st.subheader("📋 盤點撥補ZZ產生的 4 欄清單")
+  st.subheader("📋 盤點撥補ZZ產生的清單")
   if selected_records_p4:
     df_p4 = pd.DataFrame(selected_records_p4)
-    st.dataframe(df_p4, use_container_width=True)
+    st.dataframe(df_p4, use_container_width=True, hide_index=True)
     get_excel_download_button(df_p4, "盤點撥補ZZ")
   else:
     st.info("👆 請在上方勾選項目。")
