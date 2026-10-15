@@ -193,7 +193,7 @@ with tab1:
     with cols[i % 2]:
       if st.checkbox(f"{name} ({source})", key=f"p1_item_{i}"):
         selected_records_p1.append({
-            "欄位1": "盤點撥補醫材",  # 已改為盤點撥補醫材
+            "欄位1": "盤點撥補醫材",
             "欄位2": source,
             "欄位3": code,
             "欄位4": name,
@@ -215,11 +215,12 @@ with tab2:
   cols = st.columns(2)
   for i, (col1_val, col2_val, code, name) in enumerate(items_data_page2):
     with cols[i % 2]:
-      if st.checkbox(f"{name} ({code})", key=f"p2_item_{i}"):
+      # 修改處：勾選框只顯示物品名稱 (name)，不顯示編碼 (code)
+      if st.checkbox(name, key=f"p2_item_{i}"):
         selected_records_p2.append({
             "欄位1": col1_val,
             "欄位2": col2_val,
-            "欄位3": code,
+            "欄位3": code,  # 下方清單依然完整保留編碼
             "欄位4": name,
         })
 
